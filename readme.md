@@ -1,5 +1,9 @@
 # [리액트 1부] 만들고 비교하며 학습하는 리액트
 ## Vinilla JS를 활용한 검색폼 구현
+### 실행
+```
+npx lite-server --baseDir vanilla-js/
+```
 ### submit Event
 - form의 input에서 사용자가 입력 후 enter 누를시 submit event 발생
 - 페이지가 reload되면서 서버에 페이지 요청을 다시함
