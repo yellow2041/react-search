@@ -24,10 +24,11 @@ export default class Controller {
 
   reset() {
     console.log(tag, "reset");
+    this.store.searchKeyword = "";
+    this.render();
   }
 
   render() {
-    console.log(this.store.searchResult);
     if (this.store.searchKeyword.length > 0) {
       this.searchResultView.show(this.store.searchResult);
       return;
