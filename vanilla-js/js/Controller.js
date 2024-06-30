@@ -20,7 +20,7 @@ export default class Controller {
       .on("@reset", () => this.reset());
 
     // TODO
-    this.tabView.on("@click", () => this.changeTabType());
+    this.tabView.on("@change", (event) => this.changeTab(event.detail.value));
   }
 
   search(keyword) {
@@ -49,11 +49,8 @@ export default class Controller {
     this.searchResultView.show(this.store.searchResult);
   }
 
-  changeTabType() {
-    this.store.selectedTab =
-      this.store.selectedTab === TabType.KEYWORD
-        ? TabType.HISTORY
-        : TabType.KEYWORD;
+  changeTab(tab) {
+    this.store.selectedTab = tab;
     this.render();
   }
 }

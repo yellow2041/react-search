@@ -32,3 +32,27 @@ npx lite-server --baseDir vanilla-js/
       .on("@reset", () => this.reset());
   }
   ```
+### 이벤트 위임을 이용하여 클릭된 탭 구분하기
+- `helper.js`의 delegate 함수를 이용하여 이벤트가 발생된 탭 구분
+  ```javascript
+  export function delegate(target, eventName, selector, handler) {
+    const emitEvent = (event) => {
+      const potentialElements = qsAll(selector, target);
+
+      for (const potentialElement of potentialElements) {
+        if (potentialElement === event.target) {
+          return handler.call(event.target, event);
+        }
+      }
+    };
+
+    on(target, eventName, emitEvent);
+  }
+  ```
+- 사용
+  ```javascript
+  bindEvent() {
+    delegate(this.element, "click", "li", (event) => this.handleClick(event));
+  }
+  ```
+> View에서는 이벤트가 발생한 element만 구분해서 Controller로 넘기고, 이벤트에 대한 처리는 controller에서 이루어진다.
