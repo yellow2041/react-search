@@ -1,5 +1,15 @@
 import store from "/js/Store.js";
 
+export const TabType = {
+  KEYWORD: "KEYWORD",
+  HISTORY: "HISTORY",
+};
+
+const TabLabel = {
+  [TabType.KEYWORD]: "추천 검색어",
+  [TabType.HISTORY]: "최근 검색어",
+};
+
 class App extends React.Component {
   constructor() {
     super();
@@ -79,6 +89,13 @@ class App extends React.Component {
         <div className="empty-box">검색 결과가 없습니다.</div>
       );
 
+    const tabs = (
+      <ul className="tabs">
+        {Object.values(TabType).map((tabType) => {
+          return <li key={tabType}>{TabLabel[tabType]}</li>;
+        })}
+      </ul>
+    );
     return (
       <>
         <header>
@@ -86,7 +103,9 @@ class App extends React.Component {
         </header>
         <div className="container">
           {searchForm}
-          <div className="content">{this.state.submitted && searchResult}</div>
+          <div className="content">
+            {this.state.submitted ? searchResult : tabs}
+          </div>
         </div>
       </>
     );
