@@ -18,8 +18,16 @@ class App extends React.Component {
       searchKeyword: "",
       searchResult: [],
       submitted: false,
+      selectedTab: TabType.KEYWORD,
+      keywordList: [],
     };
   }
+
+  componentDidMount() {
+    const keywordList = store.getKeywordList();
+    this.setState({ keywordList });
+  }
+
   handleChangeInput(event) {
     const searchKeyword = event.target.value;
 
@@ -37,7 +45,7 @@ class App extends React.Component {
 
   search(searchKeyword) {
     const searchResult = store.search(searchKeyword);
-    this.setState({ searchResult, submitted: true });
+    this.setState({ searchKeyword, searchResult, submitted: true });
   }
 
   handleReset() {
@@ -52,6 +60,10 @@ class App extends React.Component {
         console.log(this.state.searchKeyword);
       }
     );
+  }
+
+  handleClickTab(tabType) {
+    this.setState({ selectedTab: tabType });
   }
 
   render() {
@@ -88,13 +100,36 @@ class App extends React.Component {
       ) : (
         <div className="empty-box">검색 결과가 없습니다.</div>
       );
-
-    const tabs = (
-      <ul className="tabs">
-        {Object.values(TabType).map((tabType) => {
-          return <li key={tabType}>{TabLabel[tabType]}</li>;
+    const keywordList = (
+      <ul className="list">
+        {this.state.keywordList.map((item, index) => {
+          return (
+            <li key={item.id} onClick={() => this.search(item.keyword)}>
+              <span className="number">{index + 1}</span>
+              <span>{item.keyword}</span>
+            </li>
+          );
         })}
       </ul>
+    );
+    const tabs = (
+      <>
+        <ul className="tabs">
+          {Object.values(TabType).map((tabType) => {
+            return (
+              <li
+                className={this.state.selectedTab === tabType ? "active" : ""}
+                key={tabType}
+                onClick={() => this.handleClickTab(tabType)}
+              >
+                {TabLabel[tabType]}
+              </li>
+            );
+          })}
+        </ul>
+        {this.state.selectedTab === TabType.KEYWORD && keywordList}
+        {this.state.selectedTab === TabType.HISTORY && <></>}
+      </>
     );
     return (
       <>
