@@ -11,6 +11,8 @@ class Store {
     this.storage = storage;
   }
   search(keyword) {
+    this.addHistory(keyword);
+
     return (this.searchResult = this.storage.productData.filter((product) =>
       product.name.includes(keyword)
     ));
@@ -25,7 +27,7 @@ class Store {
   }
 
   _sortHistory(history1, history2) {
-    return history2.date > history1.date;
+    return history2.date - history1.date;
   }
 
   removeHistory(keyword) {
