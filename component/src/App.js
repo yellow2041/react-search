@@ -4,6 +4,8 @@ import SearchForm from "./components/SearchForm.js";
 import SearchResult from "./components/SearchResult.js";
 import store from "./Store.js";
 import Tabs, { TabType } from "./components/Tab.js";
+import KeywordList from "./components/KeywordList.js";
+import HistoryList from "./components/HistoryList.js";
 
 class App extends React.Component {
   constructor() {
@@ -26,7 +28,7 @@ class App extends React.Component {
   search(searchKeyword) {
     const searchResult = store.search(searchKeyword);
 
-    this.setState({ searchResult, submitted: true });
+    this.setState({ searchKeyword, searchResult, submitted: true });
   }
   handleReset() {
     this.setState({
@@ -35,6 +37,7 @@ class App extends React.Component {
       submitted: false,
     });
   }
+
   render() {
     const { searchKeyword, submitted, searchResult, selectedTab } = this.state;
     return (
@@ -56,8 +59,12 @@ class App extends React.Component {
                   selectedTab={selectedTab}
                   onChange={(selectedTab) => this.setState({ selectedTab })}
                 />
-                {selectedTab === TabType.KEYWORD && <>추천검색어 목록</>}
-                {selectedTab === TabType.HISTORY && <>최근검색어 목록</>}
+                {selectedTab === TabType.KEYWORD && (
+                  <KeywordList onClick={(keyword) => this.search(keyword)} />
+                )}
+                {selectedTab === TabType.HISTORY && (
+                  <HistoryList onClick={(keyword) => this.search(keyword)} />
+                )}
               </>
             )}
           </div>
